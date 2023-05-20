@@ -5,8 +5,8 @@ const Joi = require("joi");
 const validator = require("express-joi-validation").createValidator();
 
 const registerSchema = Joi.object({
-  fname: Joi.string().required(),
-  lname: Joi.string(),
+  firstName: Joi.string().required(),
+  lastName: Joi.string(),
   password: Joi.string().min(6).max(12).required(),
   email: Joi.string().email().required(),
 });
