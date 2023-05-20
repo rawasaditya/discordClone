@@ -2,7 +2,7 @@
 const App = () => {
   return (
     <>
-<button class="btn rounded-full">One</button>
+<button className="btn rounded-full">One</button>
     </>
   )
 }
