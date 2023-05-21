@@ -1,32 +1,13 @@
-import React, { useRef } from "react";
-import { toast } from "react-toastify";
-
+import { useRef } from "react";
+import { login } from "../api.js";
 const Login = ({ setLogin }) => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const login = (e) => {
+  const Submitlogin = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        accept: "application.json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((res) => {
-        if (res.status === 400) return res.text();
-        return res.json();
-      })
-      .then((res) => {
-        if (typeof res === "string") {
-          toast.error(res);
-        } else {
-          toast.error(res.message);
-        }
-      });
+    login(email, password);
   };
   return (
     <div className="flex items-center justify-center h-screen align-middle lg:gap-6 lg:px-24 loginPage">
@@ -35,7 +16,7 @@ const Login = ({ setLogin }) => {
           <span className="w-full text-2xl font-semibold text-center text-slate-500">
             Login
           </span>
-          <form className="flex flex-col gap-5 my-4" onSubmit={login}>
+          <form className="flex flex-col gap-5 my-4" onSubmit={Submitlogin}>
             <input
               type="email"
               required
@@ -56,7 +37,7 @@ const Login = ({ setLogin }) => {
             </div>
           </form>
           <p>
-            If you don't have an account{" "}
+            If you do not have an account{" "}
             <span
               onClick={() => setLogin(false)}
               className="cursor-pointer text-primary"
