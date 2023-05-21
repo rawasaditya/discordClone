@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.loginPage {
+  background-image: url("https://images.pexels.com/photos/5384623/pexels-photo-5384623.jpeg");
+  background-size: cover;
+  filter: blur(50);
+}
