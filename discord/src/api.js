@@ -1,51 +1,78 @@
 import { toast } from "react-toastify";
+import axios from "axios";
+import packageJSON from "../package.json";
+import { logout } from "./utils/authUtils";
 
-const login = (email, password) => {
-  fetch("/api/auth/login", {
-    method: "POST",
-    headers: {
-      accept: "application.json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  })
-    .then((res) => {
-      if (res.status === 400) return res.text();
-      return res.json();
-    })
-    .then((res) => {
-      if (typeof res === "string") {
-        toast.error(res);
-      } else {
-        toast.error(res.message);
-      }
-    });
-};
+const apiClient = axios.create({
+  baseURL: `${packageJSON.proxy}/api`,
+  timeout: 1000,
+});
 
-const register = (email, password, firstName, lastName, rePassword) => {
-  if (password !== rePassword) {
-    toast.error("Passwords do not match, Please re-enter again");
-    return;
-  } else {
-    fetch("/api/auth/register", {
-      method: "POST",
-      headers: {
-        accept: "application.json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password, firstName, lastName }),
-    })
-      .then((res) => {
-        if (res.status === 400) return res.text();
-        return res.json();
-      })
-      .then((res) => {
-        if (typeof res === "string") {
-          toast.error(res);
-        } else {
-          toast.error(res.message);
-        }
-      });
+apiClient.interceptors.request.use(
+  (config) => {
+    const userDetails = localStorage.getItem("user");
+    if (userDetails) {
+      const token = JSON.parse(userDetails).token;
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
+
+export const login = async (data) => {
+  try {
+    return await apiClient.post("/auth/login", data);
+  } catch (exception) {
+    toast.error(
+      exception.response.data.message
+        ? exception.response.data.message
+        : exception.response.data
+    );
+
+    return { error: exception };
   }
 };
-export { login, register };
+
+export const register = async ({
+  email,
+  password,
+  firstName,
+  lastName,
+  rePassword,
+}) => {
+  try {
+    if (password !== rePassword) {
+      toast.error("Passwords do not match, Please re-enter again");
+      return { error: "Passwords do not match, Please re-enter again" };
+    }
+    return await apiClient.post("/auth/register", {
+      email,
+      password,
+      firstName,
+      lastName,
+      rePassword,
+    });
+  } catch (exception) {
+    return {
+      error: exception,
+    };
+  }
+};
+
+export const isAuth = async () => {
+  try {
+    return await apiClient.get("auth/isAuth");
+  } catch (exception) {
+    return {
+      error: exception,
+    };
+  }
+};
+
+const checkResponseCode = (exception) => {
+  const responseCode = exception?.response?.status;
+  if (responseCode) (responseCode === 401 || responseCode === 401) && logout();
+};

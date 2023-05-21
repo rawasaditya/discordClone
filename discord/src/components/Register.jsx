@@ -1,11 +1,15 @@
 import { useRef } from "react";
-import { register } from "../api.js";
-const Register = ({ setLogin }) => {
+import { connect } from "react-redux";
+import { getActions } from "../store/actions/authActions.js";
+import { useNavigate } from "react-router-dom";
+
+const Register = ({ setLogin, register }) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const rePasswordRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
+  const history = useNavigate();
 
   const submitRegister = (e) => {
     e.preventDefault();
@@ -14,7 +18,7 @@ const Register = ({ setLogin }) => {
     const rePassword = rePasswordRef.current.value;
     const firstName = firstNameRef.current.value;
     const lastName = firstNameRef.current.value;
-    register(email, password, firstName, lastName, rePassword);
+    register({ email, password, firstName, lastName, rePassword }, history);
   };
   return (
     <div className="flex items-center justify-center h-screen align-middle lg:gap-6 lg:px-24 loginPage">
@@ -80,4 +84,10 @@ const Register = ({ setLogin }) => {
   );
 };
 
-export default Register;
+const mapActionsToProps = (dispatch) => {
+  return {
+    ...getActions(dispatch),
+  };
+};
+
+export default connect(null, mapActionsToProps)(Register);

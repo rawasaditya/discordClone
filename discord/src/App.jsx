@@ -3,7 +3,6 @@ import LoginRegisterPage from "./pages/LoginRegisterPage";
 import DashBoard from "./pages/DashBoard";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 const App = () => {
   return (
     <>
@@ -11,7 +10,8 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/login" element={<LoginRegisterPage />} />
-          <Route path="/dashboard" element={<DashBoard />} />{" "}
+
+          <Route exact path="/dashboard" element={<DashBoard />} />
         </Routes>
       </Router>
     </>

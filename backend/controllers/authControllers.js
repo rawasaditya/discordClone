@@ -54,7 +54,6 @@ const login = async (req, res) => {
     const { password, email } = req.body;
     // Check if user already exists
     const userExists = await User.findOne({ email });
-    console.log(`-->${email}`);
     if (userExists && (await bcrypt.compare(password, userExists.password))) {
       const token = generateToken(userExists);
 

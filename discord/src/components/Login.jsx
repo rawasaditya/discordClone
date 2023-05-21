@@ -1,13 +1,16 @@
 import { useRef } from "react";
-import { login } from "../api.js";
-const Login = ({ setLogin }) => {
+import { connect } from "react-redux";
+import { getActions } from "../store/actions/authActions.js";
+import { useNavigate } from "react-router-dom";
+const Login = ({ setLogin, login }) => {
   const emailRef = useRef();
   const passwordRef = useRef();
+  const history = useNavigate();
   const Submitlogin = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    login(email, password);
+    login({ email, password }, history);
   };
   return (
     <div className="flex items-center justify-center h-screen align-middle lg:gap-6 lg:px-24 loginPage">
@@ -52,4 +55,10 @@ const Login = ({ setLogin }) => {
   );
 };
 
-export default Login;
+const mapActionsToProps = (dispatch) => {
+  return {
+    ...getActions(dispatch),
+  };
+};
+
+export default connect(null, mapActionsToProps)(Login);
