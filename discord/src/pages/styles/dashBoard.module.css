@@ -1,0 +1,6 @@
+.dc_wrapper {
+  @apply flex w-full h-screen;
+}
+.appBarWrapper {
+  @apply relative;
+}

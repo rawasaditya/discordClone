@@ -13,8 +13,8 @@ const Login = ({ setLogin, login }) => {
     login({ email, password }, history);
   };
   return (
-    <div className="flex items-center justify-center h-screen align-middle lg:gap-6 lg:px-24 loginPage">
-      <div className="ds_card">
+    <div className="flex items-center justify-center h-screen align-middle lg:gap-6 lg:px-24 dc_loginPage">
+      <div className="dc_card">
         <div className="card-body">
           <span className="w-full text-2xl font-semibold text-center text-white text-slate-500">
             Welcome back
@@ -27,17 +27,17 @@ const Login = ({ setLogin, login }) => {
               type="email"
               required
               placeholder="Enter registered email"
-              className="textBox"
+              className="dc_textBox"
               ref={emailRef}
             />
             <input
               type="password"
               placeholder="Enter password"
-              className="textBox"
+              className="dc_textBox"
               ref={passwordRef}
             />
             <div className="justify-center card-actions">
-              <button className="ds_btn_primary">Login</button>
+              <button className="dc_btn_primary">Login</button>
             </div>
           </form>
           <p>

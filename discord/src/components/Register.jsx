@@ -21,8 +21,8 @@ const Register = ({ setLogin, register }) => {
     register({ email, password, firstName, lastName, rePassword }, history);
   };
   return (
-    <div className="flex items-center justify-center h-screen align-middle lg:gap-6 lg:px-24 loginPage">
-      <div className="ds_card">
+    <div className="flex items-center justify-center h-screen align-middle lg:gap-6 lg:px-24 dc_loginPage">
+      <div className="dc_card">
         <div className="card-body">
           <span className="w-full text-2xl font-semibold text-center text-white text-slate-500">
             Create an account
@@ -32,38 +32,38 @@ const Register = ({ setLogin, register }) => {
               type="email"
               required
               placeholder="Enter your email"
-              className="textBox"
+              className="dc_textBox"
               ref={emailRef}
             />
             <input
               type="text"
               required
               placeholder="Enter your First Name"
-              className="textBox"
+              className="dc_textBox"
               ref={firstNameRef}
             />
             <input
               type="text"
               placeholder="Enter your Last Name"
-              className="textBox"
+              className="dc_textBox"
               ref={lastNameRef}
             />
             <input
               type="password"
               placeholder="Enter your Password"
-              className="textBox"
+              className="dc_textBox"
               ref={passwordRef}
               required
             />
             <input
               type="password"
               placeholder="Re-Enter password"
-              className="textBox"
+              className="dc_textBox"
               ref={rePasswordRef}
               required
             />
             <div className="justify-center card-actions">
-              <button className="ds_btn_primary">Register</button>
+              <button className="dc_btn_primary">Register</button>
             </div>
           </form>
           <p>

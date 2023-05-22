@@ -2,19 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-.loginPage {
+.dc_loginPage {
   background-image: url("https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80");
   background-size: cover;
   filter: blur(50);
 }
 
-.textBox {
+.dc_textBox {
   @apply w-full text-black bg-black border-none rounded-sm input border-slate-300;
 }
-.ds_card {
+.dc_card {
   @apply rounded-md shadow-xl card bg-base-200 h-fit;
 }
 
-.ds_btn_primary {
+.dc_btn_primary {
   @apply w-full rounded-sm btn btn-primary;
 }
