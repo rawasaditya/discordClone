@@ -22,50 +22,48 @@ const Register = ({ setLogin, register }) => {
   };
   return (
     <div className="flex items-center justify-center h-screen align-middle lg:gap-6 lg:px-24 loginPage">
-      <div className="border-t-2 shadow-xl card border-slate-300 bg-base-100 h-fit ">
+      <div className="ds_card">
         <div className="card-body">
-          <span className="w-full text-2xl font-semibold text-center text-slate-500">
-            Register
+          <span className="w-full text-2xl font-semibold text-center text-white text-slate-500">
+            Create an account
           </span>
           <form className="flex flex-col gap-5 my-4" onSubmit={submitRegister}>
             <input
               type="email"
               required
               placeholder="Enter your email"
-              className="w-full input border-slate-300"
+              className="textBox"
               ref={emailRef}
             />
             <input
               type="text"
               required
               placeholder="Enter your First Name"
-              className="w-full input border-slate-300"
+              className="textBox"
               ref={firstNameRef}
             />
             <input
               type="text"
               placeholder="Enter your Last Name"
-              className="w-full input border-slate-300"
+              className="textBox"
               ref={lastNameRef}
             />
             <input
               type="password"
               placeholder="Enter your Password"
-              className="w-full input border-slate-300"
+              className="textBox"
               ref={passwordRef}
               required
             />
             <input
               type="password"
               placeholder="Re-Enter password"
-              className="w-full input border-slate-300"
+              className="textBox"
               ref={rePasswordRef}
               required
             />
             <div className="justify-center card-actions">
-              <button className="bg-green-400 border-green-500 rounded-full outline-none btn hover:bg-green-500 px-9 btn-sm ">
-                Register
-              </button>
+              <button className="ds_btn_primary">Register</button>
             </div>
           </form>
           <p>
