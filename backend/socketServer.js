@@ -1,3 +1,8 @@
+const verifyTokenSocket = require("./middleware/socketMiddleware");
+const {
+  newConnectionHandler,
+  disconnectHandler,
+} = require("./controllers/socketControllers");
 const registerSocketServer = (server) => {
   console.log("Registered Socket");
   const io = require("socket.io")(server, {
@@ -6,9 +11,19 @@ const registerSocketServer = (server) => {
       method: ["GET", "POST"],
     },
   });
+
+  io.use((socket, next) => {
+    verifyTokenSocket(socket, next);
+  });
+
   io.on("connection", (socket) => {
     console.log("User connected");
-    console.log(socket.id);
+    newConnectionHandler(socket, io);
+
+    socket.on("disconnect", () => {
+      console.log("disconnected");
+      disconnectHandler(socket);
+    });
   });
 };
 

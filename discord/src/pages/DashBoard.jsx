@@ -14,7 +14,7 @@ const DashBoard = ({ setUserDetails }) => {
       logout();
     }
     setUserDetails(JSON.parse(userDetails));
-    connectWithSocketServer();
+    connectWithSocketServer(JSON.parse(userDetails));
   }, []);
   return (
     <div className={style.dc_wrapper}>
