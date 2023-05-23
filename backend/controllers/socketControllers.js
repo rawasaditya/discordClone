@@ -28,7 +28,6 @@ const disconnectHandler = (socket) => {
     connectedUsers.delete(socket.id);
   }
   console.log("NEW USERS");
-  console.log(connectedUsers);
 };
 module.exports = {
   newConnectionHandler,

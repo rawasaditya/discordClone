@@ -1,6 +1,12 @@
-const AddFriendButton = () => {
+import { useRef } from "react";
+import { connect } from "react-redux";
+import { getActions } from "../../store/actions/friendsActions.js";
+const AddFriendButton = ({ sendFriendInvitation }) => {
+  const email = useRef();
+
   const inviteForm = (e) => {
     e.preventDefault();
+    sendFriendInvitation({ email: email.current.value });
   };
   return (
     <>
@@ -28,6 +34,7 @@ const AddFriendButton = () => {
             Enter e-mail address of friend which you would like to invite
             <input
               type="email"
+              ref={email}
               required
               placeholder="EMAIL"
               className="w-full mt-4 bg-white rounded-none input-sm input input-bordered border-slate-400"
@@ -45,4 +52,10 @@ const AddFriendButton = () => {
   );
 };
 
-export default AddFriendButton;
+const mapActionsToProps = (dispatch) => {
+  return {
+    ...getActions(dispatch),
+  };
+};
+
+export default connect(null, mapActionsToProps)(AddFriendButton);

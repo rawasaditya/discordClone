@@ -3,6 +3,7 @@ const http = require("http");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const routers = require("./routes/authRoutes");
+const friendInvitationRouters = require("./routes/friendInvitationRouters");
 require("dotenv").config();
 
 const socketServer = require("./socketServer");
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cors());
 // Registering routes
 app.use("/api/auth", routers);
+app.use("/api/friend-invitation", friendInvitationRouters);
 
 const server = http.createServer(app);
 server.listen(PORT, () => {
