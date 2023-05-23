@@ -9,7 +9,7 @@
 }
 
 .dc_textBox {
-  @apply w-full text-black bg-black border-none rounded-sm input border-slate-300;
+  @apply w-full text-white bg-black border-none rounded-sm input border-slate-300;
 }
 .dc_card {
   @apply rounded-md shadow-xl card bg-base-200 h-fit;
