@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const friendInvitationSchema = new Schema({
+const friendInvitationSchema = new mongoose.Schema({
   senderId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

@@ -19,8 +19,10 @@ const sendFriendInvitation = (data) => {
     if (response.error) {
       console.log(response);
       toast.error(response.exception?.response?.data?.message);
+      return false;
     } else {
       toast.success("Invitation has been sent ...!");
+      return true;
     }
   };
 };

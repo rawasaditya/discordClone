@@ -3,10 +3,15 @@ import { connect } from "react-redux";
 import { getActions } from "../../store/actions/friendsActions.js";
 const AddFriendButton = ({ sendFriendInvitation }) => {
   const email = useRef();
+  const modalRef = useRef();
 
-  const inviteForm = (e) => {
+  const inviteForm = async (e) => {
     e.preventDefault();
-    sendFriendInvitation({ email: email.current.value });
+    const bool = await sendFriendInvitation({ email: email.current.value });
+    if (bool) {
+      modalRef.current.checked = false;
+      email.current.value = "";
+    }
   };
   return (
     <>
@@ -21,6 +26,7 @@ const AddFriendButton = ({ sendFriendInvitation }) => {
         type="checkbox"
         id="dc_addFriends_modal"
         className="modal-toggle"
+        ref={modalRef}
       />
       <label
         htmlFor="dc_addFriends_modal"

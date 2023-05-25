@@ -53,7 +53,6 @@ export const register = async ({
       password,
       firstName,
       lastName,
-      rePassword,
     });
   } catch (exception) {
     return {
