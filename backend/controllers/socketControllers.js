@@ -1,4 +1,7 @@
+const User = require("../models/User");
+const FriendsInvitations = require("../models/FriendsInvitations");
 const connectedUsers = new Map();
+let io = null;
 
 const addNewConnectedUser = ({ socketId, userId }) => {
   const values = [...connectedUsers.values()];
@@ -14,7 +17,13 @@ const addNewConnectedUser = ({ socketId, userId }) => {
     connectedUsers.set(socketId, { userId });
   }
 };
+const setSocketServerInstance = (ioInstance) => {
+  io = ioInstance;
+};
 
+const getSocketServerInstance = () => {
+  return io;
+};
 const newConnectionHandler = async (socket, io) => {
   const userDetails = socket.user;
   addNewConnectedUser({
@@ -27,11 +36,41 @@ const disconnectHandler = (socket) => {
   if (connectedUsers.has(socket.id)) {
     connectedUsers.delete(socket.id);
   }
-  console.log("NEW USERS");
 };
+
+const getActiveConnections = (userId) => {
+  const activesUsers = [];
+  connectedUsers.forEach((key, value) => {
+    if (key.userId === userId) {
+      activesUsers.push(value);
+    }
+  });
+  return activesUsers;
+};
+
+// UPDATE FRIENDS PENDING INVITE
+const updateFriendsPendingInvitations = async (userId) => {
+  try {
+    const pendingInvitations = await FriendsInvitations.find({
+      receiverId: userId,
+    }).populate("senderId", "firstName lastName email");
+    const receiverList = getActiveConnections(userId);
+    const io = getSocketServerInstance();
+    receiverList.forEach((receiverId) => {
+      io.to(receiverId).emit("friends-invitation", {
+        pendingInvitations: pendingInvitations ? pendingInvitations : [],
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   newConnectionHandler,
   connectedUsers,
   addNewConnectedUser,
   disconnectHandler,
+  setSocketServerInstance,
+  updateFriendsPendingInvitations,
 };

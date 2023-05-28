@@ -22,6 +22,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         onlineUsers: action.onlineUsers,
       };
+    default:
+      return state;
   }
 };
 

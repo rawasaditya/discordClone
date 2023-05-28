@@ -2,6 +2,7 @@ const verifyTokenSocket = require("./middleware/socketMiddleware");
 const {
   newConnectionHandler,
   disconnectHandler,
+  setSocketServerInstance,
 } = require("./controllers/socketControllers");
 const registerSocketServer = (server) => {
   console.log("Registered Socket");
@@ -11,7 +12,7 @@ const registerSocketServer = (server) => {
       method: ["GET", "POST"],
     },
   });
-
+  setSocketServerInstance(io);
   io.use((socket, next) => {
     verifyTokenSocket(socket, next);
   });

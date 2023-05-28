@@ -1,5 +1,8 @@
 const User = require("../models/User");
 const FriendsInvitations = require("../models/FriendsInvitations");
+const {
+  updateFriendsPendingInvitations,
+} = require("../controllers/socketControllers");
 const postInvite = async (req, res) => {
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -57,8 +60,10 @@ const postInvite = async (req, res) => {
     receiverId: targetUser._id,
   });
 
+  // send pending invitation update to receiver
+  updateFriendsPendingInvitations(targetUser.id);
   if (newInvitation) {
-    res.status(200).json({});
+    res.status(200).json({ message: "Invite sent" });
   }
 };
 

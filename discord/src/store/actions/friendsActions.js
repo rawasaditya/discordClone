@@ -13,11 +13,17 @@ export const getActions = (dispatch) => {
   };
 };
 
+export const setPendingFriendsInvitation = (pendingFriendsInvitations) => {
+  return {
+    type: fiendsActions.SET_PENDING_FRIENDS_INVITATIONS,
+    pendingFriendsInvitations,
+  };
+};
+
 const sendFriendInvitation = (data) => {
   return async () => {
     const response = await api.sendFriendInvitation(data);
     if (response.error) {
-      console.log(response);
       toast.error(response.exception?.response?.data?.message);
       return false;
     } else {
