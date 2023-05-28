@@ -10,6 +10,8 @@ export const fiendsActions = {
 export const getActions = (dispatch) => {
   return {
     sendFriendInvitation: (data) => dispatch(sendFriendInvitation(data)),
+    acceptFriendsInvitation: (data) => dispatch(acceptFriendsInvitation(data)),
+    rejectFriendsInvitation: (data) => dispatch(rejectFriendsInvitation(data)),
   };
 };
 
@@ -28,6 +30,31 @@ const sendFriendInvitation = (data) => {
       return false;
     } else {
       toast.success("Invitation has been sent ...!");
+      return true;
+    }
+  };
+};
+
+const acceptFriendsInvitation = (data) => {
+  return async () => {
+    const response = await api.acceptFriendInvitation(data);
+    if (response.error) {
+      toast.error(response.exception?.response?.data?.message);
+      return false;
+    } else {
+      toast.success("Invitation accepted ...!");
+      return true;
+    }
+  };
+};
+const rejectFriendsInvitation = (data) => {
+  return async () => {
+    const response = await api.rejectFriendInvitation(data);
+    if (response.error) {
+      toast.error(response.exception?.response?.data?.message);
+      return false;
+    } else {
+      toast.success("Invitation accepted ...!");
       return true;
     }
   };

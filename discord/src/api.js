@@ -82,6 +82,40 @@ export const sendFriendInvitation = async (data) => {
     };
   }
 };
+export const getAllFriendInvites = async (data) => {
+  try {
+    return await apiClient.get("friend-invitation/getAllInvites", data);
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+};
+
+export const acceptFriendInvitation = async (data) => {
+  try {
+    return await apiClient.post("./friends-invite/accept", data);
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+};
+export const rejectFriendInvitation = async (data) => {
+  try {
+    return await apiClient.post("./friends-invite/reject", data);
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+};
 
 const checkResponseCode = (exception) => {
   const responseCode = exception?.response?.status;

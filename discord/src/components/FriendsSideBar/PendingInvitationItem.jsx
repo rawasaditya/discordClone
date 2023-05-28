@@ -1,4 +1,6 @@
 import { MdOutlineCheck, MdClose } from "react-icons/md";
+import { connect } from "react-redux";
+import { getActions } from "../../store/actions/friendsActions.js";
 const PendingInvitationItem = ({ id, firstName, lastName, email }) => {
   return (
     <div
@@ -27,4 +29,10 @@ const PendingInvitationItem = ({ id, firstName, lastName, email }) => {
   );
 };
 
-export default PendingInvitationItem;
+const mapActionsToProps = (dispatch) => {
+  return {
+    ...getActions(dispatch),
+  };
+};
+
+export default connect(null, mapActionsToProps)(PendingInvitationItem);

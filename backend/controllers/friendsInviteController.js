@@ -67,6 +67,14 @@ const postInvite = async (req, res) => {
   }
 };
 
+const getAllInvites = async (req, res) => {
+  const pendingInvitations = await FriendsInvitations.find({
+    receiverId: req.user.userId,
+  }).populate("senderId", "firstName lastName email");
+  return res.status(200).json(pendingInvitations);
+};
+
 module.exports = {
   postInvite,
+  getAllInvites,
 };

@@ -16,7 +16,6 @@ export const connectWithSocketServer = (userDetails) => {
 
   socket.on("friends-invitation", (data) => {
     const { pendingInvitations } = data;
-    console.log(pendingInvitations);
     toast.info("You have received an invite");
     store.dispatch(setPendingFriendsInvitation(pendingInvitations));
   });
