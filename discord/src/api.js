@@ -96,7 +96,10 @@ export const getAllFriendInvites = async (data) => {
 
 export const acceptFriendInvitation = async (data) => {
   try {
-    return await apiClient.post("./friends-invite/accept", data);
+    return await apiClient.post("friend-invitation/acceptRejectInvite", {
+      ...data,
+      accept: true,
+    });
   } catch (exception) {
     checkResponseCode(exception);
     return {
@@ -107,7 +110,10 @@ export const acceptFriendInvitation = async (data) => {
 };
 export const rejectFriendInvitation = async (data) => {
   try {
-    return await apiClient.post("./friends-invite/reject", data);
+    return await apiClient.post("friend-invitation/acceptRejectInvite", {
+      ...data,
+      accept: false,
+    });
   } catch (exception) {
     checkResponseCode(exception);
     return {

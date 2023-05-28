@@ -4,5 +4,9 @@ const { verifyToken } = require("../middleware/authMiddleware");
 const friendsControllers = require("../controllers/friendsInviteController");
 router.post("/invite", verifyToken, friendsControllers.postInvite);
 router.get("/getAllInvites", verifyToken, friendsControllers.getAllInvites);
-
+router.post(
+  "/acceptRejectInvite",
+  verifyToken,
+  friendsControllers.acceptRejectInvite
+);
 module.exports = router;

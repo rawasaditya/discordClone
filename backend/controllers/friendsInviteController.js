@@ -7,7 +7,6 @@ const postInvite = async (req, res) => {
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   let { email } = req.body;
-  email = email.toLowerCase();
   if (!email.match(emailRegex)) {
     return res.json(403).status({ message: "Invalid email" });
   }
@@ -47,7 +46,7 @@ const postInvite = async (req, res) => {
 
   // If user already friend
   const userAlreadyFriend = targetUser.friends.find((friendID) => {
-    friendID.toString() === userObj.userId.toString();
+    return friendID.toString() === userObj.userId.toString();
   });
 
   if (userAlreadyFriend) {
@@ -74,7 +73,35 @@ const getAllInvites = async (req, res) => {
   return res.status(200).json(pendingInvitations);
 };
 
+const acceptRejectInvite = async (req, res) => {
+  const { invitationID, accept } = req.body;
+  try {
+    if (accept) {
+      const pendingInvite = await FriendsInvitations.findByIdAndDelete(
+        invitationID
+      );
+
+      sender = await User.findById(pendingInvite.senderId);
+      receiver = await User.findById(pendingInvite.receiverId);
+      sender.friends.push(pendingInvite.receiverId);
+      receiver.friends.push(pendingInvite.senderId);
+      await sender.save();
+      await receiver.save();
+      getAllInvites(req, res);
+    } else {
+      const pendingInvite = await FriendsInvitations.findByIdAndDelete(
+        invitationID
+      );
+      getAllInvites(req, res);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+  }
+};
+
 module.exports = {
   postInvite,
   getAllInvites,
+  acceptRejectInvite,
 };

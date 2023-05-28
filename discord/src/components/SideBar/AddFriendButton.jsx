@@ -1,6 +1,9 @@
 import { useRef } from "react";
 import { connect } from "react-redux";
 import { getActions } from "../../store/actions/friendsActions.js";
+import style from "./SideBar.module.css";
+import { BsPersonFillAdd } from "react-icons/bs";
+
 const AddFriendButton = ({ sendFriendInvitation }) => {
   const email = useRef();
   const modalRef = useRef();
@@ -15,11 +18,8 @@ const AddFriendButton = ({ sendFriendInvitation }) => {
   };
   return (
     <>
-      <label
-        htmlFor="dc_addFriends_modal"
-        className="w-40 text-white rounded-sm btn btn-success btn-sm"
-      >
-        Add friend
+      <label className={style.homeBtn} htmlFor="dc_addFriends_modal">
+        <BsPersonFillAdd />
       </label>
 
       <input
