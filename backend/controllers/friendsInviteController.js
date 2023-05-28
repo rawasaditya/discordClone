@@ -2,6 +2,7 @@ const User = require("../models/User");
 const FriendsInvitations = require("../models/FriendsInvitations");
 const {
   updateFriendsPendingInvitations,
+  updateFriends,
 } = require("../controllers/socketControllers");
 const postInvite = async (req, res) => {
   const emailRegex =
@@ -87,13 +88,14 @@ const acceptRejectInvite = async (req, res) => {
       receiver.friends.push(pendingInvite.senderId);
       await sender.save();
       await receiver.save();
-      getAllInvites(req, res);
+      updateFriends(pendingInvite.senderId._id.toString());
+      updateFriends(pendingInvite.receiverId._id.toString());
     } else {
       const pendingInvite = await FriendsInvitations.findByIdAndDelete(
         invitationID
       );
-      getAllInvites(req, res);
     }
+    getAllInvites(req, res);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });

@@ -66,6 +66,37 @@ const updateFriendsPendingInvitations = async (userId) => {
   }
 };
 
+const updateFriends = async (userId) => {
+  try {
+    const receiverList = getActiveConnections(userId);
+    if (receiverList.length) {
+      const user = await User.findById(userId, { _id: 1, friends: 1 }).populate(
+        "friends",
+        "_id firstName lastName email"
+      );
+      if (user) {
+        const friendsLists = user.friends.map((i) => {
+          return {
+            id: i._id,
+            firstName: i.firstName,
+            lastName: i.lastName,
+          };
+        });
+
+        // get io instance
+        const io = getSocketServerInstance();
+        receiverList.forEach((receiverId) => {
+          io.to(receiverId).emit("friends-list", {
+            friends: friendsLists ? friendsLists : [],
+          });
+        });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   newConnectionHandler,
   connectedUsers,
@@ -73,4 +104,5 @@ module.exports = {
   disconnectHandler,
   setSocketServerInstance,
   updateFriendsPendingInvitations,
+  updateFriends,
 };

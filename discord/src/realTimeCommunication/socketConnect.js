@@ -1,6 +1,9 @@
 import io from "socket.io-client";
 import packageJson from "../../package.json";
-import { setPendingFriendsInvitation } from "../store/actions/friendsActions";
+import {
+  setPendingFriendsInvitation,
+  setFriends,
+} from "../store/actions/friendsActions";
 import store from "../store/store";
 import { toast } from "react-toastify";
 let socket = null;
@@ -18,5 +21,11 @@ export const connectWithSocketServer = (userDetails) => {
     const { pendingInvitations } = data;
     toast.info("You have received an invite");
     store.dispatch(setPendingFriendsInvitation(pendingInvitations));
+  });
+
+  socket.on("friends-list", (data) => {
+    console.log(data);
+    const { friends } = data;
+    store.dispatch(setFriends(friends));
   });
 };

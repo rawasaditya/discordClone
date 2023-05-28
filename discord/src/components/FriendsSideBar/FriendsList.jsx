@@ -1,40 +1,9 @@
 import FriendsListsItem from "./FriendsListsItem.jsx";
-const FriendsList = () => {
-  const DUMMY_FRIENDS = [
-    {
-      id: 1,
-      firstName: "Pruthvi",
-      lastName: "Shelke",
-      isOnline: true,
-    },
-    {
-      id: 2,
-      firstName: "Pruthvi",
-      lastName: "Shelke",
-      isOnline: false,
-    },
-    {
-      id: 3,
-      firstName: "Pruthvi",
-      lastName: "Shelke",
-      isOnline: false,
-    },
-    {
-      id: 4,
-      firstName: "Pruthvi",
-      lastName: "Shelke",
-      isOnline: true,
-    },
-    {
-      id: 5,
-      firstName: "Chandrakant",
-      lastName: "Rawas",
-      isOnline: true,
-    },
-  ];
+import { connect } from "react-redux";
+const FriendsList = ({ friends }) => {
   return (
     <div className="flex-grow w-full px-2">
-      {DUMMY_FRIENDS.map((i) => {
+      {friends?.map((i) => {
         return (
           <FriendsListsItem
             id={i.id}
@@ -49,4 +18,8 @@ const FriendsList = () => {
   );
 };
 
-export default FriendsList;
+const mapStoreStateToProps = ({ friends }) => {
+  return friends;
+};
+
+export default connect(mapStoreStateToProps)(FriendsList);
