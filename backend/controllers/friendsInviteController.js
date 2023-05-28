@@ -102,8 +102,21 @@ const acceptRejectInvite = async (req, res) => {
   }
 };
 
+const getAllFriends = async (req, res) => {
+  try {
+    const users = await User.findById(req.user.userId, {
+      _id: 1,
+      friends: 1,
+    }).populate("friends", "_id firstName lastName email");
+    res.status(200).json({ friends: users });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+  }
+};
 module.exports = {
   postInvite,
   getAllInvites,
   acceptRejectInvite,
+  getAllFriends,
 };

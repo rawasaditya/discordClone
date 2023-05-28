@@ -3,6 +3,7 @@ const {
   newConnectionHandler,
   disconnectHandler,
   setSocketServerInstance,
+  getOnlineUsers,
 } = require("./controllers/socketControllers");
 const registerSocketServer = (server) => {
   console.log("Registered Socket");
@@ -17,8 +18,14 @@ const registerSocketServer = (server) => {
     verifyTokenSocket(socket, next);
   });
 
+  const emitOnlineUsers = () => {
+    const onlineUsers = getOnlineUsers();
+    io.emit("online-users", { onlineUsers });
+  };
+
   io.on("connection", (socket) => {
     console.log("User connected");
+    emitOnlineUsers();
     newConnectionHandler(socket, io);
 
     socket.on("disconnect", () => {
@@ -26,6 +33,9 @@ const registerSocketServer = (server) => {
       disconnectHandler(socket);
     });
   });
+  setInterval(() => {
+    emitOnlineUsers();
+  }, [8000]);
 };
 
 module.exports = {

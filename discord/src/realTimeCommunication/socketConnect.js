@@ -3,6 +3,7 @@ import packageJson from "../../package.json";
 import {
   setPendingFriendsInvitation,
   setFriends,
+  setOnlineUsers,
 } from "../store/actions/friendsActions";
 import store from "../store/store";
 import { toast } from "react-toastify";
@@ -24,8 +25,11 @@ export const connectWithSocketServer = (userDetails) => {
   });
 
   socket.on("friends-list", (data) => {
-    console.log(data);
     const { friends } = data;
     store.dispatch(setFriends(friends));
+  });
+
+  socket.on("online-users", (data) => {
+    store.dispatch(setOnlineUsers(data.onlineUsers ? data.onlineUsers : []));
   });
 };

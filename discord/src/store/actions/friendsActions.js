@@ -29,6 +29,13 @@ export const setFriends = (friends) => {
   };
 };
 
+export const setOnlineUsers = (onlineUsers) => {
+  return {
+    type: fiendsActions.SET_ONLINE_USERS,
+    onlineUsers,
+  };
+};
+
 const sendFriendInvitation = (data) => {
   return async () => {
     const response = await api.sendFriendInvitation(data);

@@ -97,6 +97,17 @@ const updateFriends = async (userId) => {
   }
 };
 
+const getOnlineUsers = () => {
+  const onlineUsers = [];
+  connectedUsers.forEach((value, key) => {
+    onlineUsers.push({
+      socketId: key,
+      userId: value.userId,
+    });
+  });
+  return onlineUsers;
+};
+
 module.exports = {
   newConnectionHandler,
   connectedUsers,
@@ -105,4 +116,5 @@ module.exports = {
   setSocketServerInstance,
   updateFriendsPendingInvitations,
   updateFriends,
+  getOnlineUsers,
 };

@@ -123,6 +123,18 @@ export const rejectFriendInvitation = async (data) => {
   }
 };
 
+export const getAllFriends = async () => {
+  try {
+    return await apiClient.get("friend-invitation/getAllFriends");
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+};
+
 const checkResponseCode = (exception) => {
   const responseCode = exception?.response?.status;
   if (responseCode) (responseCode === 401 || responseCode === 401) && logout();

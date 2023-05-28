@@ -9,4 +9,5 @@ router.post(
   verifyToken,
   friendsControllers.acceptRejectInvite
 );
+router.get("/getAllFriends", verifyToken, friendsControllers.getAllFriends);
 module.exports = router;
