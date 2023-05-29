@@ -15,19 +15,14 @@ const FriendsList = ({ friends, onlineUsers }) => {
   }, []);
 
   const checkOnlineUsers = (friends = [], onlineUsers = []) => {
-    return friends.map((i, idx) => {
-      if (i._id === onlineUsers[idx]?.userId) {
-        return {
-          ...i,
-          isOnline: true,
-        };
-      } else {
-        return {
-          ...i,
-          isOnline: false,
-        };
-      }
+    const onlineUsersList = onlineUsers.map((i) => i.userId);
+    const users = friends.map((i) => {
+      return {
+        ...i,
+        isOnline: onlineUsersList.includes(i._id),
+      };
     });
+    return users;
   };
 
   return (

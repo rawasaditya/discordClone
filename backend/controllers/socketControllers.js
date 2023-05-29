@@ -8,7 +8,7 @@ const addNewConnectedUser = ({ socketId, userId }) => {
   const keys = [...connectedUsers.keys()];
 
   const ids = values.map((i) => i.userId);
-  const existingIDidx = ids.indexOf(userId);
+  const existingIDidx = ids.lastIndexOf(userId);
   if (existingIDidx > -1) {
     connectedUsers.set(keys[existingIDidx], { userId });
     connectedUsers.delete(keys[existingIDidx]);
