@@ -1,13 +1,21 @@
 import style from "./Messenger.module.css";
 import AppBar from "../AppBar/AppBar";
-const Messenger = () => {
+import { connect } from "react-redux";
+import WelcomeToMessenger from "./WelcomeToMessenger";
+const Messenger = ({ chosenChatDetails }) => {
   return (
     <div className={style.wrapper}>
-      <div className={style.appBarWrapper}>
+      <div>
         <AppBar />
+      </div>
+      <div className={style.messengerWrapper}>
+        {!chosenChatDetails ? <WelcomeToMessenger /> : ""}
       </div>
     </div>
   );
 };
 
-export default Messenger;
+const mapStoreStateToProps = ({ chatReducer }) => {
+  return chatReducer;
+};
+export default connect(mapStoreStateToProps)(Messenger);

@@ -1,17 +1,17 @@
 import { logout } from "../../utils/authUtils.js";
+import { FiSettings } from "react-icons/fi";
 const ProfileDropDown = () => {
   return (
-    <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="m-1 ">
-        <div className="avatar">
-          <div className="w-10 rounded-full ring ring-info ring-offset-base-100 ring-offset-2">
-            <img src="https://avataaars.io/?avatarStyle=Circle&topType=LongHairCurly&accessoriesType=Blank&hairColor=SilverGray&facialHairType=BeardLight&facialHairColor=BlondeGolden&clotheType=ShirtVNeck&clotheColor=Gray01&eyeType=Default&eyebrowType=UnibrowNatural&mouthType=Smile&skinColor=Light'" />
-          </div>
-        </div>
+    <div className="dropdown dropdown-right dropdown-end">
+      <label
+        tabIndex={0}
+        className="m-1 text-lg cursor-pointer hover:text-slate-300"
+      >
+        <FiSettings />
       </label>
       <ul
         tabIndex={0}
-        className="p-2 border shadow dropdown-content menu bg-base-200 border-slate-300 w-52 menu-compact"
+        className="p-2 shadow dropdown-content menu bg-base-200 border-slate-300 w-52 menu-compact"
       >
         <li>
           <a>Profile</a>

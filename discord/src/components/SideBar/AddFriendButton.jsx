@@ -4,7 +4,7 @@ import { getActions } from "../../store/actions/friendsActions.js";
 import style from "./SideBar.module.css";
 import { BsPersonFillAdd } from "react-icons/bs";
 
-const AddFriendButton = ({ sendFriendInvitation }) => {
+const AddFriendButton = ({ sendFriendInvitation, className }) => {
   const email = useRef();
   const modalRef = useRef();
 
@@ -18,7 +18,7 @@ const AddFriendButton = ({ sendFriendInvitation }) => {
   };
   return (
     <>
-      <label className={style.homeBtn} htmlFor="dc_addFriends_modal">
+      <label className={className} htmlFor="dc_addFriends_modal">
         <BsPersonFillAdd />
       </label>
 

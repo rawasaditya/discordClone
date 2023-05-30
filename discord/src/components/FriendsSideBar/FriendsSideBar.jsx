@@ -3,6 +3,8 @@ import style from "./FriendsSideBar.module.css";
 import FriendsTitle from "./FriendsTitle";
 import FriendsList from "./FriendsList";
 import PendingInvitationList from "./PendingInvitationList";
+import ProfileFooter from "./ProfileFooter";
+
 const FriendsSideBar = () => {
   return (
     <div className={style.dc_friends_side_bar}>
@@ -11,6 +13,7 @@ const FriendsSideBar = () => {
       <FriendsList />
       <FriendsTitle title="Invitations" />
       <PendingInvitationList />
+      <ProfileFooter />
     </div>
   );
 };

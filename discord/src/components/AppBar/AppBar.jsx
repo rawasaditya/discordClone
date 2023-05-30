@@ -1,9 +1,9 @@
 import style from "./AppBar.module.css";
-import ProfileDropDown from "./ProfileDropDown";
+import ChatLabel from "./ChatLabel";
 const AppBar = () => {
   return (
     <div className={style.wrapper}>
-      <ProfileDropDown />
+      <ChatLabel />
     </div>
   );
 };

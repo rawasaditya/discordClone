@@ -30,11 +30,11 @@ const FriendsList = ({ friends, onlineUsers }) => {
       {checkOnlineUsers(friends, onlineUsers)?.map((i) => {
         return (
           <FriendsListsItem
-            id={i.id}
+            id={i._id}
             firstName={i.firstName}
             isOnline={i.isOnline}
             lastName={i.lastName}
-            key={i.id}
+            key={i._id}
           />
         );
       })}

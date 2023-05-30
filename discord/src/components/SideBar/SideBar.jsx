@@ -4,7 +4,7 @@ import AddFriendButton from "./AddFriendButton";
 const SideBar = () => {
   return (
     <div className={style.dc_sideBar}>
-      <AddFriendButton />
+      <AddFriendButton className={style.homeBtn} />
       <MainPageButton />
     </div>
   );
