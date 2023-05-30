@@ -2,10 +2,10 @@ import { logout } from "../../utils/authUtils.js";
 import { FiSettings } from "react-icons/fi";
 const ProfileDropDown = () => {
   return (
-    <div className="dropdown dropdown-right dropdown-end">
+    <div className="flex flex-col items-center align-middle dropdown dropdown-right dropdown-top">
       <label
         tabIndex={0}
-        className="m-1 text-lg cursor-pointer hover:text-slate-300"
+        className="text-lg cursor-pointer hover:text-slate-300"
       >
         <FiSettings />
       </label>

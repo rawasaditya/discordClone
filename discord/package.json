@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "http://192.168.138.184:5002",
+  "proxy": "http://192.168.87.184:5002",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
