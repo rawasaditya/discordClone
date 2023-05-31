@@ -1,5 +1,5 @@
 .wrapper {
-  @apply relative flex flex-col flex-1;
+  @apply relative flex flex-col w-full max-h-screen overflow-y-auto;
 }
 
 .messengerWrapper {
