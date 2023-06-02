@@ -8,6 +8,7 @@ import {
 import store from "../store/store";
 import { toast } from "react-toastify";
 let socket = null;
+
 export const connectWithSocketServer = (userDetails) => {
   socket = io(packageJson.proxy, {
     auth: {
@@ -32,4 +33,15 @@ export const connectWithSocketServer = (userDetails) => {
   socket.on("online-users", (data) => {
     store.dispatch(setOnlineUsers(data.onlineUsers ? data.onlineUsers : []));
   });
+  socket.on("direct-chat-history", (data) => {
+    console.log(data);
+  });
+};
+
+export const sendDirectMessage = (data) => {
+  socket.emit("direct-message", data);
+};
+
+export const getDirectChatHistory = (data) => {
+  socket.emit("direct-chat-history", data);
 };

@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const FriendsInvitations = require("../models/FriendsInvitations");
+const Message = require("../models/Messages");
+const Conversation = require("../models/Conversation");
 const connectedUsers = new Map();
 let io = null;
 
@@ -108,6 +110,85 @@ const getOnlineUsers = () => {
   return onlineUsers;
 };
 
+const updateChatHistory = async (conversationID, toSpecifiedSocket = null) => {
+  const conversation = await Conversation.findById(conversationID).populate({
+    path: "messages",
+    model: "Messages",
+    populate: {
+      path: "author",
+      model: "User",
+      select: "firstName lastName _id",
+    },
+  });
+  if (conversation) {
+    const io = getSocketServerInstance();
+
+    if (toSpecifiedSocket) {
+      return io.to(toSpecifiedSocket).emit("direct-chat-history", {
+        messages: conversation.messages,
+        participants: conversation.participants,
+      });
+    }
+    conversation.participants.forEach((userId) => {
+      const activeConnections = getActiveConnections(userId.toString());
+      activeConnections.forEach((socketId) => {
+        io.to(socketId).emit("direct-chat-history", {
+          messages: conversation.messages,
+          participants: conversation.participants,
+        });
+      });
+    });
+  }
+};
+
+const directMessageHandler = async (socket, data) => {
+  try {
+    const { receiverUserID, content } = data;
+    const author = socket.user.userId;
+    // create new Message
+    const message = await Message.create({
+      content,
+      author,
+      type: "DIRECT",
+    });
+
+    // FIND IF CONVERSATION EXISTS IF NOT THEN CREATE
+    const conversation = await Conversation.findOne({
+      participants: { $all: [author, receiverUserID] },
+    });
+    if (conversation) {
+      conversation.messages.push(message._id);
+      conversation.save();
+      updateChatHistory(conversation._id);
+    } else {
+      const conversation = await Conversation.create({
+        participants: [author, receiverUserID],
+        messages: [message._id],
+      });
+
+      updateChatHistory(conversation._id);
+    }
+    // PERFORM AND UPDATE TO SENDER AND RECEIVER IF IS ONLINE
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const directChatHistoryHandler = async (socket, data) => {
+  try {
+    const { userId } = socket.user;
+    const { receiverUserID } = data;
+    const conversation = await Conversation.findOne({
+      participants: { $all: [userId, receiverUserID] },
+      type: "DIRECT",
+    });
+    if (conversation) {
+      updateChatHistory(conversation._id, socket.id);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 module.exports = {
   newConnectionHandler,
   connectedUsers,
@@ -117,4 +198,6 @@ module.exports = {
   updateFriendsPendingInvitations,
   updateFriends,
   getOnlineUsers,
+  directMessageHandler,
+  directChatHistoryHandler,
 };

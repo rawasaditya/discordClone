@@ -4,6 +4,8 @@ const {
   disconnectHandler,
   setSocketServerInstance,
   getOnlineUsers,
+  directMessageHandler,
+  directChatHistoryHandler,
 } = require("./controllers/socketControllers");
 const registerSocketServer = (server) => {
   console.log("Registered Socket");
@@ -31,6 +33,14 @@ const registerSocketServer = (server) => {
     socket.on("disconnect", () => {
       console.log("disconnected");
       disconnectHandler(socket);
+    });
+
+    socket.on("direct-message", (data) => {
+      directMessageHandler(socket, data);
+    });
+
+    socket.on("direct-chat-history", (data) => {
+      directChatHistoryHandler(socket, data);
     });
   });
   setInterval(() => {
