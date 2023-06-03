@@ -1,8 +1,10 @@
-const Messages = ({ received, message }) => {
+const Messages = ({ message, author }) => {
   return (
-    <div className="chat chat-start">
-      <div className="chat-bubble chat-bubble-primary">
-        What kind of nonsense is this
+    <div className={`chat chat-${!author ? "end" : "start"}`}>
+      <div
+        className={`chat-bubble chat-bubble-${!author ? "accent" : "primary"}`}
+      >
+        {message}
       </div>
     </div>
   );

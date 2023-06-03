@@ -12,6 +12,7 @@ const MessageInput = ({ chosenChatDetails }) => {
         receiverUserID: chosenChatDetails.id,
         content: message,
       });
+      setMessage("");
     }
   };
   return (

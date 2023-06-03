@@ -158,15 +158,15 @@ const directMessageHandler = async (socket, data) => {
     });
     if (conversation) {
       conversation.messages.push(message._id);
-      conversation.save();
-      updateChatHistory(conversation._id);
+      await conversation.save();
+      updateChatHistory(conversation.id);
     } else {
       const conversation = await Conversation.create({
         participants: [author, receiverUserID],
         messages: [message._id],
+        type: "DIRECT",
       });
-
-      updateChatHistory(conversation._id);
+      updateChatHistory(conversation.id);
     }
     // PERFORM AND UPDATE TO SENDER AND RECEIVER IF IS ONLINE
   } catch (err) {
@@ -177,13 +177,14 @@ const directMessageHandler = async (socket, data) => {
 const directChatHistoryHandler = async (socket, data) => {
   try {
     const { userId } = socket.user;
-    const { receiverUserID } = data;
+    const { receiverUserId } = data;
+
     const conversation = await Conversation.findOne({
-      participants: { $all: [userId, receiverUserID] },
+      participants: { $all: [userId, receiverUserId] },
       type: "DIRECT",
     });
-    if (conversation) {
-      updateChatHistory(conversation._id, socket.id);
+    if (conversation._id) {
+      updateChatHistory(conversation.id, socket.id);
     }
   } catch (err) {
     console.log(err);

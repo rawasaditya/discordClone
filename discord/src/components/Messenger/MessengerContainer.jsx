@@ -1,20 +1,26 @@
 import { useEffect } from "react";
 import Messages from "./Messages";
 import { connect } from "react-redux";
-
+import { getDirectChatHistory } from "../../realTimeCommunication/socketConnect.js";
 const MessengerContainer = ({ chosenChatDetails, messages }) => {
-  useEffect(() => {}, [chosenChatDetails]);
+  useEffect(() => {
+    getDirectChatHistory({
+      receiverUserId: chosenChatDetails.id,
+    });
+  }, [chosenChatDetails]);
   return (
     <div className="h-full py-3 overflow-y-auto">
       <div className="flex-1">
         <div className="flex flex-col overflow-y-auto align-bottom pb-9 ">
-          <Messages />
-
-          <div className="chat chat-end">
-            <div className="chat-bubble chat-bubble-accent">
-              That's never been done in the history of the Jedi. It's insulting!
-            </div>
-          </div>
+          {messages.map((i) => {
+            return (
+              <Messages
+                message={i.content}
+                key={i._id}
+                author={i.author._id == chosenChatDetails.id}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

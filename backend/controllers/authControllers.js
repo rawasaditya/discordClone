@@ -63,6 +63,7 @@ const login = async (req, res) => {
         bio: userExists.bio,
         email: userExists.email,
         token,
+        id: userExists._id,
       });
     } else {
       res.status(401).json({ message: "Invalid user credentials" });

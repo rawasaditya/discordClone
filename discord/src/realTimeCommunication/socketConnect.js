@@ -6,6 +6,7 @@ import {
   setOnlineUsers,
 } from "../store/actions/friendsActions";
 import store from "../store/store";
+import { updateDirectChatHistoryIfActive } from "./socketutils";
 import { toast } from "react-toastify";
 let socket = null;
 
@@ -34,7 +35,7 @@ export const connectWithSocketServer = (userDetails) => {
     store.dispatch(setOnlineUsers(data.onlineUsers ? data.onlineUsers : []));
   });
   socket.on("direct-chat-history", (data) => {
-    console.log(data);
+    updateDirectChatHistoryIfActive(data);
   });
 };
 
@@ -43,5 +44,5 @@ export const sendDirectMessage = (data) => {
 };
 
 export const getDirectChatHistory = (data) => {
-  socket.emit("direct-chat-history", data);
+  socket?.emit("direct-chat-history", data);
 };
