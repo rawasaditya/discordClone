@@ -3,6 +3,7 @@ const FriendsInvitations = require("../models/FriendsInvitations");
 const Message = require("../models/Messages");
 const Conversation = require("../models/Conversation");
 const connectedUsers = new Map();
+let activeRooms = [];
 let io = null;
 
 const addNewConnectedUser = ({ socketId, userId }) => {
@@ -190,6 +191,36 @@ const directChatHistoryHandler = async (socket, data) => {
     console.log(err);
   }
 };
+
+const roomCreateHandler = async (socket, data) => {
+  const socketId = socket.id;
+  const userId = socket.user.userId;
+  const conversation = await Conversation.findOne({
+    participants: { $all: [userId, data] },
+  });
+  console.log("Room created", conversation.id);
+  const roomDetails = addNewActiveRoom(userId, socketId, conversation.id);
+  socket.emit("room-create", roomDetails);
+};
+
+// rooms
+const addNewActiveRoom = (userId, socketId, conversationId) => {
+  const newRoom = {
+    roomCreator: {
+      userId,
+      socketId,
+    },
+    participants: [
+      {
+        userId,
+        socketId,
+      },
+    ],
+    roomId: conversationId,
+  };
+  activeRooms.push(newRoom);
+  return newRoom;
+};
 module.exports = {
   newConnectionHandler,
   connectedUsers,
@@ -201,4 +232,5 @@ module.exports = {
   getOnlineUsers,
   directMessageHandler,
   directChatHistoryHandler,
+  roomCreateHandler,
 };

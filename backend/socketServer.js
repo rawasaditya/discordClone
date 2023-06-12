@@ -6,6 +6,7 @@ const {
   getOnlineUsers,
   directMessageHandler,
   directChatHistoryHandler,
+  roomCreateHandler,
 } = require("./controllers/socketControllers");
 const registerSocketServer = (server) => {
   console.log("Registered Socket");
@@ -41,6 +42,9 @@ const registerSocketServer = (server) => {
 
     socket.on("direct-chat-history", (data) => {
       directChatHistoryHandler(socket, data);
+    });
+    socket.on("room-create", (data) => {
+      roomCreateHandler(socket, data);
     });
   });
   setInterval(() => {

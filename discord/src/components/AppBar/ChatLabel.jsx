@@ -1,13 +1,15 @@
 import { connect } from "react-redux";
+import CreateRoomButton from "../SideBar/CreateRoomButton";
+
 const ChatLabel = ({ chosenChatDetails }) => {
-  const { firstName, lastName } = chosenChatDetails
+  const { firstName, lastName, id } = chosenChatDetails
     ? chosenChatDetails
     : { firstName: undefined, lastName: undefined };
   return (
     <>
       {chosenChatDetails && (
-        <div>
-          <div className="flex items-center w-full gap-2 px-3 py-3 ">
+        <div className="flex items-center w-full">
+          <div className="flex items-center flex-1 w-full gap-2 px-3 py-3 ">
             <div className="flex items-center flex-1 gap-2">
               <div className={`avatar online} placeholder `}>
                 <div className="w-10 rounded-full bg-neutral-focus text-neutral-content">
@@ -22,6 +24,9 @@ const ChatLabel = ({ chosenChatDetails }) => {
                 {firstName} {lastName}
               </span>
             </div>
+          </div>
+          <div>
+            <CreateRoomButton id={id} className="text-2xl btn btn-ghost" />
           </div>
         </div>
       )}

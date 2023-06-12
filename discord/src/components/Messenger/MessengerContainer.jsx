@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import Messages from "./Messages";
 import { connect } from "react-redux";
 import { getDirectChatHistory } from "../../realTimeCommunication/socketConnect.js";
 import { format } from "date-fns";
+import MessagesWrapper from "./MessagesWrapper";
 
 const MessengerContainer = ({ chosenChatDetails, messages }) => {
   useEffect(() => {
@@ -26,27 +26,14 @@ const MessengerContainer = ({ chosenChatDetails, messages }) => {
   return (
     <div className="h-full py-3 overflow-y-auto">
       <div className="flex-1">
-        {Object.keys(clubbedMessages).map((i) => {
+        {Object.keys(clubbedMessages).map((i, idx) => {
           return (
-            <>
-              <div className="w-full text-center">
-                <span className="badge badge-neutral">{i}</span>
-              </div>
-              <div className="flex flex-col overflow-y-auto align-bottom pb-9">
-                {clubbedMessages[i].map((j) => {
-                  return (
-                    <>
-                      <Messages
-                        message={j.content}
-                        key={j._id}
-                        author={j.author._id == chosenChatDetails.id}
-                        createdAt={format(new Date(j.createdAt), "HH:MM:SS")}
-                      />
-                    </>
-                  );
-                })}
-              </div>
-            </>
+            <MessagesWrapper
+              key={idx}
+              clubbedMessages={clubbedMessages}
+              date={i}
+              chosenChatDetails={chosenChatDetails}
+            />
           );
         })}
       </div>

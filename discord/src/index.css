@@ -37,3 +37,31 @@
 .dc_btn_primary {
   @apply w-full rounded-sm btn btn-primary;
 }
+.chat-start {
+  place-items: start;
+  grid-template-columns: auto 1fr;
+}
+.chat-end {
+  place-items: end;
+  grid-template-columns: 1fr auto;
+}
+.chat-bubble-primary {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--p) / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: hsl(var(--pc) / var(--tw-text-opacity));
+}
+.chat-bubble-accent {
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--a) / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: hsl(var(--ac) / var(--tw-text-opacity));
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}

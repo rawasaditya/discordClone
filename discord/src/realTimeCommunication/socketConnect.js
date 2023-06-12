@@ -8,6 +8,7 @@ import {
 import store from "../store/store";
 import { updateDirectChatHistoryIfActive } from "./socketutils";
 import { toast } from "react-toastify";
+import { newRoomCreated } from "./roomHandler";
 let socket = null;
 
 export const connectWithSocketServer = (userDetails) => {
@@ -37,6 +38,10 @@ export const connectWithSocketServer = (userDetails) => {
   socket.on("direct-chat-history", (data) => {
     updateDirectChatHistoryIfActive(data);
   });
+  socket.on("room-create", (data) => {
+    newRoomCreated(data);
+    console.log(data);
+  });
 };
 
 export const sendDirectMessage = (data) => {
@@ -45,4 +50,8 @@ export const sendDirectMessage = (data) => {
 
 export const getDirectChatHistory = (data) => {
   socket?.emit("direct-chat-history", data);
+};
+
+export const createNewRoom = (id) => {
+  socket?.emit("room-create", id);
 };
