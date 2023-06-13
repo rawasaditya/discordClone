@@ -5,21 +5,34 @@ import { ImPhoneHangUp } from "react-icons/im";
 import { BsMicMuteFill, BsFillMicFill } from "react-icons/bs";
 import { AiOutlineVideoCamera } from "react-icons/ai";
 import { MdOutlineScreenShare } from "react-icons/md";
-const CreateRoomButton = ({ className, id }) => {
+import CallingIndicator from "../FriendsSideBar/CallingIndicator";
+const CreateRoomButton = ({ className, id, isCalling, roomDetails }) => {
   const initialState = true;
   const [camera, setCamera] = useState(initialState);
   const [shareScreen, setShareScreen] = useState(!initialState);
   const [mic, setMic] = useState(!initialState);
-
   return (
     <>
-      <label
-        htmlFor="chatRoomModal"
-        className={className}
-        onClick={() => roomHandler.createNewRoom(id)}
-      >
-        <AiOutlineVideoCameraAdd />
-      </label>
+      {!isCalling ? (
+        <label
+          htmlFor="chatRoomModal"
+          className={`${className} flex gap-4`}
+          onClick={() => roomHandler.createNewRoom(id)}
+        >
+          <AiOutlineVideoCameraAdd />
+        </label>
+      ) : (
+        <label
+          htmlFor="chatRoomModal"
+          className={`${className} flex gap-4`}
+          onClick={() =>
+            roomHandler.joinExistingRoom(roomDetails.roomDetails.roomId)
+          }
+        >
+          <AiOutlineVideoCameraAdd />
+          <CallingIndicator />
+        </label>
+      )}
       <input type="checkbox" id="chatRoomModal" className="modal-toggle" />
       <div className="modal">
         <div className="flex flex-col w-11/12 h-full max-w-full modal-box">

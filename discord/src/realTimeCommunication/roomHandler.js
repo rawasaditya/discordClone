@@ -6,6 +6,10 @@ export const createNewRoom = (id) => {
   socketConnection.createNewRoom(id);
 };
 
+export const joinExistingRoom = (id) => {
+  socketConnection.joinExistingRoom(id);
+};
+
 export const newRoomCreated = (data) => {
   store.dispatch(setRoomDetails(data));
 };

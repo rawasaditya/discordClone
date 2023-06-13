@@ -192,18 +192,48 @@ const directChatHistoryHandler = async (socket, data) => {
   }
 };
 
-const roomCreateHandler = async (socket, data) => {
+// rooms
+const roomCreateHandler = async (socket, callToId) => {
   const socketId = socket.id;
   const userId = socket.user.userId;
   const conversation = await Conversation.findOne({
-    participants: { $all: [userId, data] },
+    participants: { $all: [userId, callToId] },
   });
-  console.log("Room created", conversation.id);
-  const roomDetails = addNewActiveRoom(userId, socketId, conversation.id);
-  socket.emit("room-create", roomDetails);
+  const roomDetails = addNewActiveRoom(
+    userId,
+    socketId,
+    conversation.id,
+    callToId
+  );
+  socket.emit("room-create", { from: userId, to: callToId, roomDetails });
+  updateRooms(userId, callToId, roomDetails);
 };
 
-// rooms
+const roomJoinHandler = async (socket, roomId) => {
+  const socketId = socket.id;
+  const userId = socket.user.userId;
+  const idx = activeRooms.findIndex((i) => {
+    return roomId === i.roomId;
+  });
+  if (idx > -1) {
+    const isParticipant = activeRooms[idx].participants.findIndex((i) => {
+      return i.userId === userId;
+    });
+    if (isParticipant > -1) {
+      // activeRooms[idx].participants.splice(isParticipant, 1);
+    } else {
+      activeRooms[idx].participants = [
+        ...activeRooms[idx].participants,
+        {
+          userId,
+          socketId,
+        },
+      ];
+    }
+    joinParticipants(activeRooms[idx].participants, roomId);
+  }
+};
+
 const addNewActiveRoom = (userId, socketId, conversationId) => {
   const newRoom = {
     roomCreator: {
@@ -221,6 +251,32 @@ const addNewActiveRoom = (userId, socketId, conversationId) => {
   activeRooms.push(newRoom);
   return newRoom;
 };
+
+const joinParticipants = (participants, roomId) => {
+  const allOnlineUsers = getOnlineUsers();
+  const socketIds = participants.map((i) => {
+    return i.socketId;
+  });
+  const io = getSocketServerInstance();
+  socketIds.map((i) => {
+    io.to(i).emit("join-rooms", {
+      participants,
+      roomId,
+    });
+  });
+};
+
+const updateRooms = (from = null, to = null, roomDetails) => {
+  const allOnlineUsers = getOnlineUsers();
+  const toUser = allOnlineUsers.find((i) => {
+    return i.userId == to;
+  });
+  if (toUser) {
+    const io = getSocketServerInstance();
+    io.to(toUser.socketId).emit("active-rooms", { from, to, roomDetails });
+  }
+};
+
 module.exports = {
   newConnectionHandler,
   connectedUsers,
@@ -233,4 +289,6 @@ module.exports = {
   directMessageHandler,
   directChatHistoryHandler,
   roomCreateHandler,
+  updateRooms,
+  roomJoinHandler,
 };

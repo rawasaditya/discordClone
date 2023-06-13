@@ -1,12 +1,14 @@
 import { chatTypes } from "../../store/actions/chatActions.js";
 import { connect } from "react-redux";
 import { getActions } from "../../store/actions/chatActions.js";
+import CallingIndicator from "./CallingIndicator";
 const FriendsListsItem = ({
   id,
   firstName,
   lastName,
   isOnline,
   setChosenChatDetails,
+  isCalling,
 }) => {
   const handleChooseActiveConversation = () => {
     setChosenChatDetails(
@@ -27,7 +29,8 @@ const FriendsListsItem = ({
           `}</span>
         </div>
       </div>
-      <span>{`${firstName}`}</span>
+      <span className="flex-1 text-left">{`${firstName}`}</span>
+      {isCalling && <CallingIndicator />}
     </button>
   );
 };

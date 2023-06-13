@@ -8,7 +8,6 @@ const SideBar = () => {
     <div className={style.dc_sideBar}>
       <MainPageButton />
       <AddFriendButton className={style.homeBtn} />
-      <CreateRoomButton className={style.homeBtn} />
     </div>
   );
 };

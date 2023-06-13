@@ -5,6 +5,7 @@ import {
   setFriends,
   setOnlineUsers,
 } from "../store/actions/friendsActions";
+import { setRoomDetails } from "../store/actions/roomActions";
 import store from "../store/store";
 import { updateDirectChatHistoryIfActive } from "./socketutils";
 import { toast } from "react-toastify";
@@ -40,7 +41,13 @@ export const connectWithSocketServer = (userDetails) => {
   });
   socket.on("room-create", (data) => {
     newRoomCreated(data);
+  });
+  socket.on("active-rooms", (data) => {
+    store.dispatch(setRoomDetails(data));
+  });
+  socket.on("join-rooms", (data) => {
     console.log(data);
+    store.dispatch(setRoomDetails(data));
   });
 };
 
@@ -54,4 +61,8 @@ export const getDirectChatHistory = (data) => {
 
 export const createNewRoom = (id) => {
   socket?.emit("room-create", id);
+};
+
+export const joinExistingRoom = (id) => {
+  socket?.emit("room-join", id);
 };

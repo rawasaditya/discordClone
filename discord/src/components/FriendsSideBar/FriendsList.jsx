@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { getAllFriends } from "../../api.js";
 import store from "../../store/store.js";
 import { setFriends } from "../../store/actions/friendsActions.js";
-const FriendsList = ({ friends, onlineUsers }) => {
+const FriendsList = ({ friends, onlineUsers, roomDetails }) => {
   useEffect(() => {
     const resp = getAllFriends();
     resp.then((res) => {
@@ -16,11 +16,28 @@ const FriendsList = ({ friends, onlineUsers }) => {
 
   const checkOnlineUsers = (friends = [], onlineUsers = []) => {
     const onlineUsersList = onlineUsers.map((i) => i.userId);
-    const users = friends.map((i) => {
+    const use = friends.map((i) => {
       return {
         ...i,
         isOnline: onlineUsersList.includes(i._id),
       };
+    });
+
+    const activeRoomDetails = roomDetails.map((i) => {
+      return [i.from, i.to];
+    });
+    const users = use.map((i) => {
+      if (activeRoomDetails.flat().includes(i._id)) {
+        return {
+          ...i,
+          isCalling: true,
+        };
+      } else {
+        return {
+          ...i,
+          isCalling: false,
+        };
+      }
     });
     return users;
   };
@@ -35,6 +52,7 @@ const FriendsList = ({ friends, onlineUsers }) => {
             isOnline={i.isOnline}
             lastName={i.lastName}
             key={i._id}
+            isCalling={i.isCalling}
           />
         );
       })}
@@ -42,8 +60,11 @@ const FriendsList = ({ friends, onlineUsers }) => {
   );
 };
 
-const mapStoreStateToProps = ({ friends }) => {
-  return friends;
+const mapStoreStateToProps = ({ friends, room }) => {
+  return {
+    ...friends,
+    ...room,
+  };
 };
 
 export default connect(mapStoreStateToProps)(FriendsList);
