@@ -9,7 +9,7 @@ import { setRoomDetails } from "../store/actions/roomActions";
 import store from "../store/store";
 import { updateDirectChatHistoryIfActive } from "./socketutils";
 import { toast } from "react-toastify";
-import { newRoomCreated } from "./roomHandler";
+import { newRoomCreated, exitParticipants } from "./roomHandler";
 let socket = null;
 
 export const connectWithSocketServer = (userDetails) => {
@@ -46,8 +46,12 @@ export const connectWithSocketServer = (userDetails) => {
     store.dispatch(setRoomDetails(data));
   });
   socket.on("join-rooms", (data) => {
-    console.log(data);
     store.dispatch(setRoomDetails(data));
+  });
+
+  socket.on("participant-updates", (data) => {
+    console.log(data);
+    exitParticipants(data);
   });
 };
 
@@ -61,6 +65,10 @@ export const getDirectChatHistory = (data) => {
 
 export const createNewRoom = (id) => {
   socket?.emit("room-create", id);
+};
+
+export const exitRoom = (id) => {
+  socket?.emit("room-exit", id);
 };
 
 export const joinExistingRoom = (id) => {

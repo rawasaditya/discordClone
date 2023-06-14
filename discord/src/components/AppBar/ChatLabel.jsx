@@ -5,12 +5,7 @@ const ChatLabel = ({ chosenChatDetails, onlineUsers, roomDetails }) => {
   const { firstName, lastName, id } = chosenChatDetails
     ? chosenChatDetails
     : { firstName: undefined, lastName: undefined };
-  const isOnline = onlineUsers.find((i) => {
-    return i.userId === id;
-  });
-  const isCalling = roomDetails.find((i) => {
-    return [i.from, i.to].includes(id);
-  });
+
   return (
     <>
       {chosenChatDetails && (
@@ -30,16 +25,6 @@ const ChatLabel = ({ chosenChatDetails, onlineUsers, roomDetails }) => {
                 {firstName} {lastName}
               </span>
             </div>
-          </div>
-          <div>
-            <CreateRoomButton
-              id={id}
-              className={`${
-                !isOnline?.userId ? "btn-disabled" : ""
-              } text-2xl btn btn-ghost`}
-              isCalling={isCalling?.from?.length > 0}
-              roomDetails={isCalling}
-            />
           </div>
         </div>
       )}

@@ -39,6 +39,7 @@ const disconnectHandler = (socket) => {
   if (connectedUsers.has(socket.id)) {
     connectedUsers.delete(socket.id);
   }
+  console.log(activeRooms);
 };
 
 const getActiveConnections = (userId) => {
@@ -277,6 +278,43 @@ const updateRooms = (from = null, to = null, roomDetails) => {
   }
 };
 
+const roomExitHandler = async (socket, roomId) => {
+  const user = socket.user.userId;
+  const idx = activeRooms.findIndex((i) => i.roomId === roomId);
+  const allOnlineUsers = getOnlineUsers();
+  const io = getSocketServerInstance();
+  const getParticipants = await Conversation.findById(roomId);
+  const UserIds = getParticipants.participants.map((i) => i._id.toString());
+  if (idx !== -1) {
+    userId = activeRooms[idx].roomCreator.userId;
+    const onLineParticipants = allOnlineUsers.map((i) => {
+      if (UserIds.includes(i.userId)) {
+        return i.socketId;
+      }
+    });
+    if (user === userId) {
+      onLineParticipants.map((i) =>
+        io.to(i).emit("participant-updates", {
+          participants: [],
+          roomId: activeRooms[idx].roomId,
+        })
+      );
+      activeRooms.splice(idx, 1);
+    } else {
+      const participants = activeRooms[idx].participants;
+      const pidx = participants.findIndex((i) => i.userId === user);
+      participants.splice(pidx, 1);
+      activeRooms[idx].participants = participants;
+      onLineParticipants.map((i) =>
+        io.to(i).emit("participant-updates", {
+          participants,
+          roomId: activeRooms[idx].roomId,
+        })
+      );
+    }
+  }
+  console.log(activeRooms);
+};
 module.exports = {
   newConnectionHandler,
   connectedUsers,
@@ -291,4 +329,5 @@ module.exports = {
   roomCreateHandler,
   updateRooms,
   roomJoinHandler,
+  roomExitHandler,
 };

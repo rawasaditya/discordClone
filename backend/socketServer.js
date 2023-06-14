@@ -8,6 +8,7 @@ const {
   directChatHistoryHandler,
   roomCreateHandler,
   roomJoinHandler,
+  roomExitHandler,
 } = require("./controllers/socketControllers");
 const registerSocketServer = (server) => {
   console.log("Registered Socket");
@@ -49,6 +50,9 @@ const registerSocketServer = (server) => {
     });
     socket.on("room-join", (data) => {
       roomJoinHandler(socket, data);
+    });
+    socket.on("room-exit", (data) => {
+      roomExitHandler(socket, data);
     });
   });
   setInterval(() => {
